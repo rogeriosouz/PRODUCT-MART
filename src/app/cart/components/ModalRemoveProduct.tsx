@@ -1,0 +1,93 @@
+import { querryClient } from '@/lib/querryClient'
+import { api } from '@/lib/axios'
+import { useMutation } from 'react-query'
+import { Button } from '@/components/ui/button'
+
+interface ModalRemoveProductProps {
+  id: string
+  quant: number
+  name: string
+  open: boolean
+  startLoadingCart: () => void
+  stopLoadingCart: () => void
+  close: () => void
+}
+
+export function ModalRemoveProduct({
+  id,
+  quant,
+  name,
+  open = false,
+  startLoadingCart,
+  stopLoadingCart,
+  close,
+}: ModalRemoveProductProps) {
+  const updateQuantProductCartMutation = useMutation<
+    any,
+    any,
+    { quantItem: number; idItemCart: string },
+    any
+  >(
+    async ({ idItemCart, quantItem }) => {
+      startLoadingCart()
+      const response = await api.put('/cart', {
+        idItemCart,
+        quantItem,
+      })
+
+      return response.data
+    },
+    {
+      onSuccess() {
+        close()
+        setTimeout(() => {
+          stopLoadingCart()
+          querryClient.invalidateQueries(['/cart'])
+        }, 1000)
+      },
+    },
+  )
+
+  function updateQuant({
+    quantItem,
+    idItemCart,
+  }: {
+    quantItem: number
+    idItemCart: string
+  }) {
+    updateQuantProductCartMutation.mutate({ idItemCart, quantItem })
+  }
+
+  return (
+    <>
+      {open && (
+        <div className="animate__animated animate__fadeIn fixed bottom-0 left-0 right-0 top-0 z-[99999999999] flex h-screen w-screen items-center justify-center bg-zinc-50/90 px-5">
+          <div className="animate__animated animate__fadeInDown z-[9999999999] rounded bg-white px-10 py-5 shadow-2xl ">
+            <h1 className="mb-1 text-center text-2xl font-medium text-zinc-900">
+              REMOVE PRODUCT - <span className="uppercase">({name})</span>
+            </h1>
+            <p className="mb-4 text-sm font-normal text-zinc-900">
+              Are you sure you want to remove this product from your cart?
+            </p>
+            <div className="flex w-full items-center gap-2">
+              <Button onClick={close} variant={'default'}>
+                No
+              </Button>
+              <Button
+                onClick={() => {
+                  updateQuant({
+                    idItemCart: id,
+                    quantItem: quant - 1,
+                  })
+                }}
+                variant={'destructive'}
+              >
+                Yes
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  )
+}
