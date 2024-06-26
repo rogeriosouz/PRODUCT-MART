@@ -17,7 +17,8 @@ export function ImageProduct({ images }: ImageProductProps) {
           <Button
             onClick={() => setImage(index)}
             key={image}
-            className="bg-bg-secondary flex h-20 w-full items-center justify-center overflow-hidden"
+            variant={'outline'}
+            className="flex h-20 w-full items-center justify-center overflow-hidden"
           >
             <Image src={image} alt={image} width={80} height={80} />
           </Button>

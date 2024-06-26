@@ -29,11 +29,17 @@ export function Product({
       href={urlRedirect}
       className="flex h-[530px] w-[320px] flex-col  overflow-hidden rounded shadow-lg shadow-zinc-900/10 md:w-full"
     >
-      <div className="relative flex w-full flex-1 items-center justify-center overflow-hidden bg-zinc-100/40">
-        <Image src={image} alt={name} width={280} height={280} />
+      <div className="group relative flex w-full flex-1 items-center justify-center overflow-hidden bg-zinc-100/40 ">
+        <Image
+          src={image}
+          alt={name}
+          width={200}
+          height={200}
+          className="transition-all group-hover:scale-125"
+        />
 
-        {Promotion !== null && (
-          <div className="rotate-4 bg-bg-red absolute right-0 top-0 flex h-[31px] w-[147px] items-center justify-center">
+        {Promotion && (
+          <div className="rotate-4 absolute right-0 top-0 flex h-[31px] w-[147px] items-center justify-center bg-red-600">
             <p className="text-base font-normal text-white">
               {Promotion.discount}% OOF
             </p>
@@ -42,7 +48,7 @@ export function Product({
       </div>
 
       <div className="w-full py-3 text-center">
-        <h1 className="text-text-primary text-lg font-semibold capitalize">
+        <h1 className="text-text-primary text-base font-semibold capitalize transition-all">
           {name}
         </h1>
 

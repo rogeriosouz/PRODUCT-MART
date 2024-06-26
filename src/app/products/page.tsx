@@ -81,7 +81,7 @@ export default function Products() {
         )}
 
         {statusCategory === 'success' && (
-          <div className="grid w-full grid-cols-5 gap-3 md:grid-cols-2 sm:grid-cols-1">
+          <div className="grid w-full grid-cols-4 gap-3 md:grid-cols-2 sm:grid-cols-1">
             <Button
               onClick={() => setCategoryQuerryParams('all-products')}
               variant="default"

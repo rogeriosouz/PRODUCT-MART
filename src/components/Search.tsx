@@ -154,8 +154,8 @@ export function Search({ closeSearch, openSearch }: SearchProps) {
         )}
 
         {mutation.status === 'error' && (
-          <div className="absolute left-0 right-0 top-[100%] flex items-center justify-end rounded">
-            <div className="w-full rounded-b bg-zinc-600 px-2 py-5">
+          <div className="absolute left-0 right-0 top-[100%] flex items-center justify-end rounded ">
+            <div className="w-full rounded-b bg-primary px-12 py-5 sm:px-5">
               <h1 className="text-base font-medium text-white">
                 {mutation.error.response.data.message}: ({watch('search')})
               </h1>
