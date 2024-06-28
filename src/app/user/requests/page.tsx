@@ -57,7 +57,7 @@ export default function Requests() {
         <h1 className="text-lg font-medium">MY REQUESTS</h1>
       </div>
 
-      <div className="my-8 flex w-full items-center justify-between gap-2 md:px-5">
+      <div className="my-8 flex w-full items-center justify-between gap-2 md:px-5 sm:flex-col sm:items-start">
         <div className="flex items-center gap-2">
           <p className="text-lg font-normal uppercase text-zinc-900">
             FILTER BY:
@@ -86,9 +86,7 @@ export default function Requests() {
           </Button>
         </div>
 
-        <div className="flex items-center gap-2">
-          <Search debouncedSearch={debouncedSearchFn} search={search || ''} />
-        </div>
+        <Search debouncedSearch={debouncedSearchFn} search={search || ''} />
       </div>
 
       {isNotRequest && (
