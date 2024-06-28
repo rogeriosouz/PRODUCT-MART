@@ -5,8 +5,8 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useAuth } from '@/context/authContext'
 import { z } from 'zod'
-import Link from 'next/link'
 import { Button } from '../ui/button'
+import Link from 'next/link'
 
 const schemaSignin = z.object({
   email: z.string().email(),

@@ -14,6 +14,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { Search } from './components/Search'
+import { ArrowCounterClockwise, CircleNotch } from '@phosphor-icons/react'
+import { Button } from '@/components/ui/button'
 
 export default function Requests() {
   const {
@@ -23,13 +26,15 @@ export default function Requests() {
     setValuePage,
     ordemCreatedAt,
     setValueOrdemCreatedAt,
+    search,
+    debouncedSearchFn,
   } = useRequests()
 
-  const { data, status } = useQuery<ResponseRequestType>(
-    ['/requests', page, ordemCreatedAt],
+  const { data, status, refetch, isFetching } = useQuery<ResponseRequestType>(
+    ['/requests', page, ordemCreatedAt, search],
     async () => {
       const response = await api.get(
-        `/requests?pageSize=10&page=${page}&ordemCreatedAt=${ordemCreatedAt}`,
+        `/requests?pageSize=7&page=${page}&ordemCreatedAt=${ordemCreatedAt}&search=${search}`,
       )
       return response.data
     },
@@ -41,6 +46,10 @@ export default function Requests() {
 
   const isNotRequest = status === 'success' && data.requests.length < 1
 
+  function refetchFn() {
+    refetch()
+  }
+
   return (
     <div className="mx-auto mt-[140px] max-w-[1200px]">
       <div className="my-8 flex w-full items-center gap-2 md:px-5">
@@ -48,29 +57,53 @@ export default function Requests() {
         <h1 className="text-lg font-medium">MY REQUESTS</h1>
       </div>
 
-      {isNotRequest && <p>Você não possui nenhuma compra no site.</p>}
-
-      {!isNotRequest && (
-        <div className="my-8 flex items-center gap-2 md:px-5">
+      <div className="my-8 flex w-full items-center justify-between gap-2 md:px-5">
+        <div className="flex items-center gap-2">
           <p className="text-lg font-normal uppercase text-zinc-900">
             FILTER BY:
           </p>
 
-          <Select onValueChange={(value) => setValueOrdemCreatedAt(value)}>
+          <Select
+            onValueChange={(value) => setValueOrdemCreatedAt(value)}
+            value={ordemCreatedAt}
+            defaultValue="desc"
+          >
             <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Theme" />
+              <SelectValue />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="desc">New</SelectItem>
               <SelectItem value="asc">Old</SelectItem>
             </SelectContent>
           </Select>
+
+          <Button variant={'outline'} size={'icon'} onClick={refetchFn}>
+            {isFetching ? (
+              <CircleNotch className="h-5 w-5 animate-spin" />
+            ) : (
+              <ArrowCounterClockwise className="h-5 w-5" weight="bold" />
+            )}
+          </Button>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <Search debouncedSearch={debouncedSearchFn} search={search || ''} />
+        </div>
+      </div>
+
+      {isNotRequest && (
+        <div className="flex w-full items-center gap-2">
+          <p>No purchases found.</p>
         </div>
       )}
 
       <div className="flex w-full flex-col gap-3 md:px-5">
         {status === 'loading' && (
           <>
+            <LoadingRequest />
+            <LoadingRequest />
+            <LoadingRequest />
+            <LoadingRequest />
             <LoadingRequest />
             <LoadingRequest />
             <LoadingRequest />

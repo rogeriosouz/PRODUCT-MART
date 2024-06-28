@@ -134,7 +134,6 @@ export function Search({ closeSearch, openSearch }: SearchProps) {
                         <div className="flex items-center gap-1">
                           <p className="text-xs font-normal text-white line-through">
                             {convertPrice(product.price)}
-                            {product.price}
                           </p>
                           <p className="text-bg-red text-lg font-semibold">
                             {convertPrice(product.discountPrice)}

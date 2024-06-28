@@ -44,7 +44,7 @@ export function InputInput({
             'border-red-500 text-red-500 placeholder:text-red-500 group-focus-within:border-red-500':
               isErro,
 
-            'border-zinc-900/20 group-focus-within:border-bg-blue': !isErro,
+            'border-zinc-900/20 group-focus-within:border-primary': !isErro,
           },
           rest.className,
         )}
@@ -58,7 +58,7 @@ export function InputInput({
         >
           {visibleInput ? (
             <EyeOff
-              className={clsx('h-4 w-4 ', {
+              className={clsx('h-4 w-4', {
                 'text-red-500': isErro,
                 'text-zinc-900/80': !isErro,
               })}

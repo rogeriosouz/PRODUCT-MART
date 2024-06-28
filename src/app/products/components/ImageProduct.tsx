@@ -1,5 +1,6 @@
 'use client'
 import { Button } from '@/components/ui/button'
+import clsx from 'clsx'
 import Image from 'next/image'
 import { useState } from 'react'
 
@@ -13,14 +14,20 @@ export function ImageProduct({ images }: ImageProductProps) {
   return (
     <div className="flex w-full flex-1 items-start gap-8 md:flex-col">
       <div className="grid w-20 grid-cols-1 gap-6">
-        {images.map((image, index) => (
+        {images.map((imageItem, index) => (
           <Button
             onClick={() => setImage(index)}
-            key={image}
+            key={imageItem}
             variant={'outline'}
-            className="flex h-20 w-full items-center justify-center overflow-hidden"
+            className={clsx(
+              'flex h-20 w-full items-center justify-center overflow-hidden border-2',
+              {
+                'border-primary': index === image,
+                'border-transparent': index !== image,
+              },
+            )}
           >
-            <Image src={image} alt={image} width={80} height={80} />
+            <Image src={imageItem} alt={imageItem} width={80} height={80} />
           </Button>
         ))}
       </div>
