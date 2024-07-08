@@ -63,9 +63,12 @@ export function ProductsCart({
       <div className="flex h-full w-full items-start justify-between py-5">
         <div className="h-full">
           <h2 className="mb-1 text-lg font-normal text-zinc-900">{name}</h2>
-          <h2 className="mb-1 text-sm font-normal text-zinc-700/90">
-            type: {type}
-          </h2>
+
+          {type.length >= 1 && (
+            <h2 className="mb-1 text-sm font-normal text-zinc-700/90">
+              type: {type}
+            </h2>
+          )}
 
           <div className="flex items-center gap-2 md:flex-col md:items-start">
             <p className="text-bg-red text-lg font-bold">
