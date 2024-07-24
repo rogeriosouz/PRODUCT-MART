@@ -6,11 +6,8 @@ import { MapPin } from '@/components/icons'
 import { ModalCreateAddress } from '@/app/user/settings/components/ModalCreateAddress'
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
-
-interface AddressProps {
-  seValueAddressId: (addressId: string) => void
-  address?: string
-}
+import { data } from 'autoprefixer'
+import { Controller } from 'react-hook-form'
 
 export type AddressType = {
   id: string
@@ -24,8 +21,9 @@ export type AddressType = {
   create_at: string
 }
 
-export function Address({ seValueAddressId, address }: AddressProps) {
+export function Address() {
   const [openCreateAddressModal, setOpenCreateAddressModal] = useState(false)
+
   const { data, status } = useQuery<{ address: AddressType[] }>(
     ['/address'],
     async () => {
@@ -96,40 +94,48 @@ export function Address({ seValueAddressId, address }: AddressProps) {
 
             {data.address.length >= 1 && (
               <div className="mt-5 w-full space-y-3">
-                <RadioGroup.Root
-                  onValueChange={seValueAddressId}
-                  className="space-y-2"
-                  defaultValue={data.address[data.address.length - 1].id}
-                >
-                  {data.address.map((item) => (
-                    <div
-                      key={item.id}
-                      className="relative w-full rounded bg-white px-4 py-2 shadow-2xl "
+                <Controller
+                  name="address"
+                  render={({ field: { ref, value, onChange } }) => (
+                    <RadioGroup.Root
+                      value={value}
+                      onValueChange={onChange}
+                      className="space-y-2"
+                      ref={ref}
                     >
-                      <label className="flex cursor-pointer items-center gap-3">
-                        <RadioGroup.Item
-                          className="flex h-7 w-7 items-center justify-center rounded bg-zinc-200"
-                          value={item.id}
+                      {data.address.map((item) => (
+                        <div
+                          key={item.id}
+                          className="relative w-full rounded bg-white px-4 py-2 shadow-2xl "
                         >
-                          <RadioGroup.Indicator asChild>
-                            <div className="h-3 w-3 rounded bg-primary"></div>
-                          </RadioGroup.Indicator>
-                        </RadioGroup.Item>
-                        <p className="text-base font-medium text-zinc-900">
-                          {item.state}
-                        </p>
+                          <label className="flex cursor-pointer items-center gap-3">
+                            <RadioGroup.Item
+                              className="flex h-7 w-7 items-center justify-center rounded bg-zinc-200"
+                              value={item.id}
+                            >
+                              <RadioGroup.Indicator asChild>
+                                <div className="h-3 w-3 rounded bg-primary"></div>
+                              </RadioGroup.Indicator>
+                            </RadioGroup.Item>
+                            <p className="text-base font-medium text-zinc-900">
+                              {item.state}
+                            </p>
 
-                        <p className="text-base font-medium text-zinc-900">|</p>
+                            <p className="text-base font-medium text-zinc-900">
+                              |
+                            </p>
 
-                        <p className="text-sm font-normal text-zinc-500">
-                          {item.zipcode}
-                        </p>
-                      </label>
+                            <p className="text-sm font-normal text-zinc-500">
+                              {item.zipcode}
+                            </p>
+                          </label>
 
-                      <UpdateAddress address={item} />
-                    </div>
-                  ))}
-                </RadioGroup.Root>
+                          <UpdateAddress address={item} />
+                        </div>
+                      ))}
+                    </RadioGroup.Root>
+                  )}
+                />
               </div>
             )}
           </>

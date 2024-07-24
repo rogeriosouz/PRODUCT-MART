@@ -2,9 +2,7 @@
 import { ChevronLeft, CircleDashed } from 'lucide-react'
 import Link from 'next/link'
 import { FormProvider } from 'react-hook-form'
-import { PaymentMethod } from './components/PaymentMethod'
 import { Address } from './components/Address'
-
 import { ItemCheckout } from './components/ItemCheckout'
 import { LoadingItemCheckout } from './components/LoadingItemCheckout'
 import { convertPrice } from '@/utils/convertePrice'
@@ -12,17 +10,7 @@ import { useCheckout } from '@/hooks/useCheckout'
 import { Button } from '@/components/ui/button'
 
 export default function Checkout() {
-  const {
-    data,
-    addressID,
-    methodSelect,
-    methods,
-    onSubmit,
-    requestMutation,
-    setValueAddressId,
-    setValueMethodSelect,
-    status,
-  } = useCheckout()
+  const { data, methods, onSubmit, requestMutation, status } = useCheckout()
 
   if (data && data.cart.itemsCarts.length <= 0) {
     return (
@@ -88,12 +76,7 @@ export default function Checkout() {
             )}
           </div>
 
-          <Address seValueAddressId={setValueAddressId} address={addressID} />
-
-          <PaymentMethod
-            methodSelect={methodSelect}
-            setValueMethodSelect={setValueMethodSelect}
-          />
+          <Address />
         </div>
 
         <div className="sticky top-[150px] w-[450px] rounded bg-white p-10 shadow-2xl lg:w-full sm:px-5">
@@ -136,7 +119,7 @@ export default function Checkout() {
             {requestMutation.status === 'loading' ? (
               <CircleDashed className="animate-spin" />
             ) : (
-              'Place Order'
+              'Go to payment'
             )}
           </Button>
         </div>

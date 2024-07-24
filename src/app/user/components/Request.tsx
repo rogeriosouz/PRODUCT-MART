@@ -33,6 +33,7 @@ export function Request({
   const statusColor: any = {
     DONE: 'text-yellow-500',
     ERROR: 'text-red-500',
+    CANCEL: 'text-red-500',
   }
 
   const IconPayment = paymentMethod === 'Pix' ? Pix : CreditCard

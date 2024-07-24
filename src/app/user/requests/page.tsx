@@ -36,6 +36,8 @@ export default function Requests() {
       const response = await api.get(
         `/requests?pageSize=7&page=${page}&ordemCreatedAt=${ordemCreatedAt}&search=${search}`,
       )
+
+  
       return response.data
     },
 

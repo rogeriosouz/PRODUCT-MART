@@ -2,7 +2,7 @@
 import { AlertCircle, Check, CircleDashed } from 'lucide-react'
 import { Input } from '../input'
 import { z } from 'zod'
-import { useParams } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import { useForm } from '@/hooks/useForm'
 import { Button } from '../ui/button'
 
@@ -25,6 +25,7 @@ type recoveryPasswordType = z.infer<typeof schemaRecoveryPassword>
 
 export function FormRecoveryPassword() {
   const { token } = useParams()
+  const { push } = useRouter()
 
   const { Submit, handleSubmit, errors, mutation, register } = useForm<
     recoveryPasswordType,
@@ -35,6 +36,13 @@ export function FormRecoveryPassword() {
       method: 'PUT',
     },
     schemaZod: schemaRecoveryPassword,
+    resultMutation: {
+      onSuccess: () => {
+        setTimeout(() => {
+          push('/auth/signin')
+        }, 1000)
+      },
+    },
   })
 
   return (
