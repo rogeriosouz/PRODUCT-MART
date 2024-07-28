@@ -7,8 +7,8 @@ import { useMutation, useQuery } from 'react-query'
 import { useForm } from 'react-hook-form'
 import { querryClient } from '@/lib/querryClient'
 import { useRouter } from 'next/navigation'
-import toast from 'react-hot-toast'
 import { z } from 'zod'
+import toast from 'react-hot-toast'
 
 const schemaCheckout = z.object({
   address: z.string().uuid(),
@@ -30,7 +30,10 @@ export function useCheckout() {
   const methods = useForm<SchemaCheckout>({
     resolver: zodResolver(schemaCheckout),
     values: {
-      address: dataAddress?.address ? dataAddress?.address[0].id : '',
+      address:
+        dataAddress?.address && dataAddress.address.length >= 1
+          ? dataAddress?.address[0].id
+          : '',
     },
   })
 
@@ -41,7 +44,7 @@ export function useCheckout() {
 
   const requestMutation = useMutation<
     { message: string; url: string },
-    unknown,
+    { response: { data: { message: string } } },
     { address: string }
   >(
     async ({ address }) => {
@@ -61,12 +64,16 @@ export function useCheckout() {
 
         querryClient.invalidateQueries(['/cart'])
       },
+
+      onError: (error) => {
+        toast.error(error.response.data.message)
+      },
     },
   )
 
   const itemRequestCreateMutation = useMutation<
     { message: string },
-    unknown,
+    { response: { data: { message: string } } },
     { address: string }
   >(
     async () => {
@@ -79,6 +86,9 @@ export function useCheckout() {
         requestMutation.mutate({
           address,
         })
+      },
+      onError: (error) => {
+        toast.error(error.response.data.message)
       },
     },
   )
